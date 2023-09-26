@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Button, Text, View } from "react-native";
+import { Button, Text, View, StyleSheet } from "react-native";
 
 const SignInScreen = ({ route, navigation }) => {
   return (
@@ -10,6 +10,7 @@ const SignInScreen = ({ route, navigation }) => {
         title="Go to Sign Up"
         onPress={() => navigation.navigate("SignUp")}
       />
+      <Button title="Go to Main" onPress={() => navigation.navigate("Main")} />
     </View>
   );
 };
