@@ -8,6 +8,8 @@ import TrackCreateScreen from "./src/screens/TrackCreateScreen";
 import TrackDetailScreen from "./src/screens/TrackDetailScreen";
 import { StyleSheet, View } from "react-native";
 
+import { Provider as AuthProvider } from "./src/context/AuthContext";
+
 const Stack = createNativeStackNavigator();
 const BottomTab = createMaterialBottomTabNavigator();
 
@@ -22,25 +24,27 @@ function BottomTabNavigator() {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="SignUp">
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="SignUp"
-          component={SignUpScreen}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="SignIn"
-          component={SignInScreen}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="Main"
-          component={BottomTabNavigator}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="SignUp">
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="SignUp"
+            component={SignUpScreen}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="SignIn"
+            component={SignInScreen}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Main"
+            component={BottomTabNavigator}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AuthProvider>
   );
 }
 

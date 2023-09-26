@@ -1,9 +1,20 @@
 import { Button, Input, Text } from "@rneui/base";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Spacer from "../components/Spacer";
 import { StyleSheet, View } from "react-native";
 
 const SignUpScreen = ({ route, navigation }) => {
+  let [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const setData = (key, value) => {
+    setFormData((current) => ({
+      ...current,
+      [key]: value,
+    }));
+  };
   return (
     <>
       <View style={styles.container}>
@@ -11,10 +22,21 @@ const SignUpScreen = ({ route, navigation }) => {
           <Text h4>SignUp Screen</Text>
         </Spacer>
         <Spacer>
-          <Input label="Email" />
+          <Input
+            label="Email"
+            onChangeText={(value) => setData("email", value)}
+            autoCapitalize="none"
+            autoComplete="off"
+          />
         </Spacer>
         <Spacer>
-          <Input label="Password" />
+          <Input
+            secureTextEntry
+            label="Password"
+            onChangeText={(value) => setData("password", value)}
+            autoCapitalize="none"
+            autoComplete="off"
+          />
         </Spacer>
         <Spacer>
           <Button title="Sign Up" />
