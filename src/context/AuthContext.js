@@ -23,6 +23,12 @@ const authReducer = (state, action) => {
         signedIn: true,
         errorMessage: action.payload,
       };
+    case "clean_error":
+      return {
+        ...state,
+        signedIn: false,
+        errorMessage: "",
+      };
     default:
       return state;
   }
@@ -41,15 +47,26 @@ const signUp = (dispatch) => async (email, password) => {
     dispatch({ type: "add_error", payload: err.message });
   }
 };
-const signIn = (dispatch) => {
-  return { email, password };
+const signIn = (dispatch) => async (email, password) => {
+  try {
+    const response = await axiosInstance.post("/signIn", { email, password });
+
+    if ((response.data.status = 200)) {
+      dispatch({ type: "signIn", payload: response.data.token });
+      await AsyncStorage.setItem("token", response.data.token);
+      navigate("Main");
+    }
+  } catch (err) {
+    dispatch({ type: "add_error", payload: err.message });
+  }
 };
+
 const signOut = (dispatch) => {
   return { email, password };
 };
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signUp },
+  { signUp, signIn },
   { token: null, isSignedIn: false, errorMessage: "" }
 );
