@@ -7,19 +7,16 @@ import AuthForm from "../components/AuthForm";
 import NavLink from "../components/NavLink";
 
 const SignUpScreen = ({ navigation }) => {
-  let [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const { state, signUp, cleanError } = useContext(AuthContext);
 
-  const setData = (key, value) => {
-    setFormData((current) => ({
-      ...current,
-      [key]: value,
-    }));
-  };
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      cleanError();
+    });
 
-  const { state, signUp } = useContext(AuthContext);
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <>
       <View style={styles.container}>

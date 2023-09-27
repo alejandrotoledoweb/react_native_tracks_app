@@ -61,12 +61,16 @@ const signIn = (dispatch) => async (email, password) => {
   }
 };
 
-const signOut = (dispatch) => {
+const cleanError = (dispatch) => () => {
+  dispatch({ type: "clean_error" });
+};
+
+const signOut = (dispatch) => () => {
   return { email, password };
 };
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signUp, signIn },
+  { signUp, signIn, cleanError },
   { token: null, isSignedIn: false, errorMessage: "" }
 );

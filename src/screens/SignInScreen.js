@@ -3,9 +3,18 @@ import { Button, Text, View, StyleSheet } from "react-native";
 import AuthForm from "../components/AuthForm";
 import NavLink from "../components/NavLink";
 import { Context as AuthContext } from "../context/AuthContext";
+import { useFocusEffect } from "@react-navigation/native";
 
-const SignInScreen = ({ route, navigation }) => {
-  const { state, signIn } = useContext(AuthContext);
+const SignInScreen = ({ navigation }) => {
+  const { state, signIn, cleanError } = useContext(AuthContext);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      cleanError();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <>
       <View style={styles.container}>

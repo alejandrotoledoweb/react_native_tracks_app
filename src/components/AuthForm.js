@@ -1,12 +1,26 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 
 import Spacer from "./Spacer";
 import { Text, Button, Input } from "@rneui/base";
+import { Context as AuthContext } from "../context/AuthContext";
 
 const AuthForm = ({ headerText, errorMessage, onSubmit, submitButtonText }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // const { cleanError } = useContext(AuthContext);
+  // useEffect(() => {
+  //   cleanError();
+  // }, [formData]);
+  let [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const setData = (key, value) => {
+    setFormData((current) => ({
+      ...current,
+      [key]: value,
+    }));
+  };
 
   return (
     <>
@@ -15,8 +29,8 @@ const AuthForm = ({ headerText, errorMessage, onSubmit, submitButtonText }) => {
       </Spacer>
       <Input
         label="Email"
-        value={email}
-        onChangeText={setEmail}
+        value={formData.email}
+        onChangeText={(value) => setData("email", value)}
         autoCapitalize="none"
         autoCorrect={false}
       />
@@ -24,8 +38,8 @@ const AuthForm = ({ headerText, errorMessage, onSubmit, submitButtonText }) => {
       <Input
         secureTextEntry
         label="Password"
-        value={password}
-        onChangeText={setPassword}
+        value={formData.password}
+        onChangeText={(value) => setData("password", value)}
         autoCapitalize="none"
         autoCorrect={false}
       />
@@ -35,7 +49,7 @@ const AuthForm = ({ headerText, errorMessage, onSubmit, submitButtonText }) => {
       <Spacer>
         <Button
           title={submitButtonText}
-          onPress={() => onSubmit({ email, password })}
+          onPress={() => onSubmit(formData.email, formData.password)}
         />
       </Spacer>
     </>
