@@ -1,9 +1,12 @@
 import { Button, Input, Text } from "@rneui/base";
 import React, { useContext, useEffect, useState } from "react";
 import Spacer from "../components/Spacer";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Context as AuthContext } from "../context/AuthContext";
+import AuthForm from "../components/AuthForm";
+import NavLink from "../components/NavLink";
 
-const SignUpScreen = ({ route, navigation }) => {
+const SignUpScreen = ({ navigation }) => {
   let [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -15,39 +18,21 @@ const SignUpScreen = ({ route, navigation }) => {
       [key]: value,
     }));
   };
+
+  const { state, signUp } = useContext(AuthContext);
   return (
     <>
       <View style={styles.container}>
-        <Spacer>
-          <Text h4>SignUp Screen</Text>
-        </Spacer>
-        <Spacer>
-          <Input
-            label="Email"
-            onChangeText={(value) => setData("email", value)}
-            autoCapitalize="none"
-            autoComplete="off"
-          />
-        </Spacer>
-        <Spacer>
-          <Input
-            secureTextEntry
-            label="Password"
-            onChangeText={(value) => setData("password", value)}
-            autoCapitalize="none"
-            autoComplete="off"
-          />
-        </Spacer>
-        <Spacer>
-          <Button title="Sign Up" />
-        </Spacer>
-
-        <Spacer>
-          <Button
-            title="Go to Sign In"
-            onPress={() => navigation.navigate("SignIn")}
-          />
-        </Spacer>
+        <AuthForm
+          headerText="Sign Up for Tracker"
+          errorMessage={state.errorMessage}
+          submitButtonText="Sign Up"
+          onSubmit={signUp}
+        />
+        <NavLink
+          routeName="SignIn"
+          text="Already have an account? Sign in instead!"
+        />
       </View>
     </>
   );
@@ -57,6 +42,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 100,
+  },
+  errorMessage: {
+    fontSize: 15,
+    color: "red",
+    marginLeft: 15,
+    marginBottom: 15,
   },
 });
 

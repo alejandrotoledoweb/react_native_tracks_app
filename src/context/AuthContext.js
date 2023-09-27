@@ -1,4 +1,7 @@
 import createDataContext from "./createDataContext";
+import axiosInstance from "../api/tracker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { navigate } from "../utils/navigationService";
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -7,13 +10,46 @@ const authReducer = (state, action) => {
         ...state,
         signedIn: true,
       };
+    case "singup":
+      return {
+        ...state,
+        signedIn: true,
+        token: action.payload,
+        errorMessage: "",
+      };
+    case "add_error":
+      return {
+        ...state,
+        signedIn: true,
+        errorMessage: action.payload,
+      };
     default:
       return state;
   }
 };
 
-export default { Provider, Context } = createDataContext(
+const signUp = (dispatch) => async (email, password) => {
+  try {
+    const response = await axiosInstance.post("/signup", { email, password });
+
+    if ((response.data.status = 200)) {
+      dispatch({ type: "signup", payload: response.data.token });
+      await AsyncStorage.setItem("token", response.data.token);
+      navigate("Main");
+    }
+  } catch (err) {
+    dispatch({ type: "add_error", payload: err.message });
+  }
+};
+const signIn = (dispatch) => {
+  return { email, password };
+};
+const signOut = (dispatch) => {
+  return { email, password };
+};
+
+export const { Provider, Context } = createDataContext(
   authReducer,
-  {},
-  { isSignedIn: false }
+  { signUp },
+  { token: null, isSignedIn: false, errorMessage: "" }
 );
