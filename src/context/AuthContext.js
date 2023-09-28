@@ -67,7 +67,7 @@ const cleanError = (dispatch) => () => {
 
 const tryLocalisgnIn = (dispatch) => async () => {
   const token = await AsyncStorage.getItem("token");
-  if (token) {
+  if (token !== undefined) {
     dispatch({ type: "signIn", payload: token });
     navigate("Main");
   } else {
@@ -75,12 +75,14 @@ const tryLocalisgnIn = (dispatch) => async () => {
   }
 };
 
-const signOut = (dispatch) => () => {
-  return { email, password };
+const signOut = (dispatch) => async () => {
+  dispatch({ type: "signOut", payload: "" });
+  await AsyncStorage.removeItem("token");
+  navigate("SignIn");
 };
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signUp, signIn, cleanError, tryLocalisgnIn },
+  { signUp, signIn, cleanError, tryLocalisgnIn, signOut },
   { token: null, isSignedIn: false, errorMessage: "" }
 );

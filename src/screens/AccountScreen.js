@@ -1,11 +1,14 @@
+import { Button, Text } from "@rneui/base";
 import React, { useContext, useEffect } from "react";
-import { Button, Text, View } from "react-native";
+import { Context as AuthContext } from "../context/AuthContext";
 
 const AccountScreen = ({ route, navigation }) => {
+  const { signOut } = useContext(AuthContext);
   return (
-    <View>
+    <>
       <Text>Account Screenn</Text>
-    </View>
+      <Button title="Sign out" onPress={signOut} />
+    </>
   );
 };
 

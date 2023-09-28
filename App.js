@@ -9,15 +9,21 @@ import TrackDetailScreen from "./src/screens/TrackDetailScreen";
 import { StyleSheet } from "react-native";
 import { Provider as AuthProvider, Context } from "./src/context/AuthContext";
 import { navigationRef } from "./src/utils/navigationService";
+import AccountScreen from "./src/screens/AccountScreen";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createMaterialBottomTabNavigator();
 
 function BottomTabNavigator() {
   return (
-    <BottomTab.Navigator>
-      <BottomTab.Screen name="TrackCreate" component={TrackCreateScreen} />
+    <BottomTab.Navigator style={styles.bottomTab}>
+      <BottomTab.Screen
+        style={styles.item}
+        name="TrackCreate"
+        component={TrackCreateScreen}
+      />
       <BottomTab.Screen name="TrackDetail" component={TrackDetailScreen} />
+      <BottomTab.Screen name="Account" component={AccountScreen} />
     </BottomTab.Navigator>
   );
 }
@@ -41,6 +47,7 @@ export default function App() {
             options={{ headerShown: false }}
             name="Main"
             component={BottomTabNavigator}
+            style={styles.bottomTab}
           />
         </Stack.Navigator>
       </AuthProvider>
@@ -56,7 +63,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   bottomTab: {
-    backgroundColor: "grey",
-    marginTop: 60,
+    // paddingBottom: 20,
+    // borderColor: "red",
+    // borderWidth: 10,
+    marginTop: 35,
+    marginBottom: 15,
+    justifyContent: "center",
+  },
+  item: {
+    borderColor: "red",
+    borderWidth: 10,
+    fontSize: 20,
   },
 });
