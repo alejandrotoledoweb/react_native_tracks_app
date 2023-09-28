@@ -5,9 +5,10 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Context as AuthContext } from "../context/AuthContext";
 import AuthForm from "../components/AuthForm";
 import NavLink from "../components/NavLink";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignUpScreen = ({ navigation }) => {
-  const { state, signUp, cleanError } = useContext(AuthContext);
+  const { state, signUp, cleanError, tryLocalisgnIn } = useContext(AuthContext);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -16,6 +17,10 @@ const SignUpScreen = ({ navigation }) => {
 
     return unsubscribe;
   }, [navigation]);
+
+  useEffect(() => {
+    tryLocalisgnIn();
+  }, []);
 
   return (
     <>
